@@ -1,5 +1,9 @@
 # Chat-GBT-WebUI
 
+## Preview
+
+![](./demo.gif)
+
 ## Quick Start
 
 ### Install
