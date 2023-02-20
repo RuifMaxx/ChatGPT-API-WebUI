@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	  	<link rel="stylesheet" href="{{ url_for('static', filename='asset_code.css') }}">
+	</head>
+	<body>
+		<h1>聊天机器人</h1>
+
+			<form action="http://127.0.0.1:5000/chat" method="POST">
+				<label form="description">You:</label>
+				<input type="text" id="description" name="description">
+				<button type="submit" class=cv_btn>提交</button>
+
+			</form>
+			<br>
+			<br>
+			Bot: {{ prediction_text }}
+
+	</body>
+</html>
