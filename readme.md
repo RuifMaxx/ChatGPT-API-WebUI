@@ -1,4 +1,4 @@
-# Chat-GBT-WebUI
+# GPT-Bot-WebUI
 
 ## Preview
 
