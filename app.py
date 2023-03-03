@@ -2,7 +2,7 @@ from flask import Flask, request, session, redirect, render_template
 import os,openai
 # create the flask app
 app = Flask(__name__)
-app.secret_key = 'secret_key'
+app.secret_key = 'fkdjsafjdkfdlkjfadskjfadskljdsfklj'
 openai.api_key = "api_key"
 
 
