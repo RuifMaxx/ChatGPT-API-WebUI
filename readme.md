@@ -1,5 +1,7 @@
 # Chat-GBT-WebUI
 
+the minimum webpage implement of to Call ChatGPT API
+
 ## Preview
 
 ![](./chatgpt.gif)
