@@ -5,17 +5,25 @@
 	  	<link rel="stylesheet" href="{{ url_for('static', filename='asset_code.css') }}">
 	</head>
 	<body>
-		<h1>聊天机器人</h1>
+		<h1>Chat机器人</h1>
+			<a href = '/logout'></b>清空对话内容 (clear conversation)</b></a>
+			<script>
+				var sec = {{ data | tojson }};
 
-			<form action="http://127.0.0.1:5000/chat" method="POST">
+				for (var i=0;i<sec.length;i++)
+				{ 
+
+					document.write("<p>"+sec[i]["role"] +": "+sec[i]["content"]+ "<p>");
+				}
+
+			</script>
+			
+
+			<form action="http://url/" method="POST">
 				<label form="description">You:</label>
 				<input type="text" id="description" name="description">
-				<button type="submit" class=cv_btn>提交</button>
+				<button type="submit" class=cv_btn>提交(submit)</button>
 
 			</form>
-			<br>
-			<br>
-			Bot: {{ prediction_text }}
-
 	</body>
 </html>

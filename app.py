@@ -1,46 +1,52 @@
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, session, redirect, render_template
 import os,openai
 # create the flask app
 app = Flask(__name__)
+app.secret_key = 'secret_key'
+openai.api_key = "api_key"
 
-openai.api_key = "your_key"
 
-def generate_text(prompt):
-    # Set up the parameters for the API request
-    model_engine = "text-davinci-003"
+def generate_text(messages):
 
-    # Call the OpenAI API to generate text
-    response = openai.Completion.create(
-        engine=model_engine,
-        prompt=prompt,
-        max_tokens=1024,
-        n=1,
-        stop=None,
-        temperature=0.5,
+    response = openai.ChatCompletion.create(
+    model="gpt-3.5-turbo",
+    messages=messages
     )
 
-    # Extract the generated text from the API response
-    output = response.choices[0].text.strip()
+    output = response.choices[0].message.content.strip()
 
     return output
 
-# what html should be loaded as the home page when the app loads?
-@app.route('/')
-def home():
-    return render_template('app_frontend.html', prediction_text="")
+@app.route('/logout')
+def logout():
+   session.pop('data', None)
+   return redirect('http://url/')
 
-@app.route('/chat', methods=['GET','POST'])
+@app.route('/', methods=['GET','POST'])
 def chat():
-    # get the description submitted on the web page
-    prompt = request.form.get('description')
-    if request.method == 'POST':
-        a_description = generate_text(prompt)
+    
+    if 'data' in session:
+
+        messages = session['data']
+        if request.method == 'POST':  
+            # get the description submitted on the web page
+            prompt = request.form.get('description')
+            if len(prompt)>0:
+                session['data'].append({"role": "user", "content": prompt},)
+                
+                messages = session['data']
+                a_description = generate_text(messages)
+                
+                messages.append({"role": "assistant", "content": a_description},)
+                session['data'] = messages
+        
     else:
-        a_description = '请向我提问'
-    return render_template('app_frontend.html', prediction_text=a_description)
+        session['data'] = [{"role": "system", "content": "You are a helpful assistant."},]
+    
+    return render_template('app_frontend.html', data = session['data'])
 
 
 # boilerplate flask app code
 if __name__ == "__main__":
-    port = int(os.environ.get('PORT', 5000))
+    port = int(os.environ.get('PORT',80))
     app.run(debug=True, host='0.0.0.0', port=port)

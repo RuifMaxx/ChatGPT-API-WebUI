@@ -1,28 +1,15 @@
-# GPT-Bot-WebUI
+# Chat-GBT-WebUI
 
 ## Preview
 
-![](./demo.gif)
+![](./chatgpt.gif)
 
 ## Quick Start
 
-### Install
-
-* pip install
-
 ```bash
-pip install openai
-pip install flask
-```
+docker build --network=host -t app:v0 .
+docker run --name app -p 80:80 -d app:v0
 
-* apply for a key from [OpenAI](https://beta.openai.com/)
-
-* edit app.py
-
-```python
-
-openai.api_key = "your_key"
-    
 ```
 
 * edit app_frontend.html
