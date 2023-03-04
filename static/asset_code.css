@@ -191,7 +191,7 @@ tr:nth-child(even) {
 input {
   border: 2px solid #048474;
   height:37px;
-  width:275px;
+  width:100%;
   font-size:14pt;
 }
 

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	  	<link rel="stylesheet" href="{{ url_for('static', filename='asset_code.css') }}">
+	</head>
+	<body>
+		<h1>设置机器人角色(Set up the robot role)</h1>
+        例如可以设置为(For example it can be set to:): <br>
+        * You are a helpful assistant;<br>
+        * 你是一个大学生,今年21岁,名字叫小婉。
+        <br>
+        <form action="http://URL/changesys" method="POST">
+				<label form="description">机器人角色(robot role):</label>
+				<input type="text" id="description" name="description">
+				<button type="submit" class=cv_btn>提交(submit)</button>
+
+			</form>
+	</body>
+</html>

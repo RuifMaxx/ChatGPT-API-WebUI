@@ -1,26 +1,45 @@
-from flask import Flask, request, session, redirect, render_template
+from flask import Flask, request, session, redirect, url_for, render_template
 import os,openai
 # create the flask app
 app = Flask(__name__)
 app.secret_key = 'fkdjsafjdkfdlkjfadskjfadskljdsfklj'
-openai.api_key = "api_key"
+openai.api_key = "key"
 
+@app.errorhandler(Exception)
+def error_handler(*args):
+    return redirect('http://URL/logout')
 
 def generate_text(messages):
-
+    
     response = openai.ChatCompletion.create(
     model="gpt-3.5-turbo",
-    messages=messages
+    messages=messages,
+    temperature = 1.7
     )
-
+    
     output = response.choices[0].message.content.strip()
-
     return output
 
 @app.route('/logout')
 def logout():
-   session.pop('data', None)
-   return redirect('http://url/')
+    if 'system' in session.keys():
+        session['data'] = [{"role": "system", "content": session['system']},]
+    else:
+        session['system'] = "You are a helpful assistant."
+        session['data'] = [{"role": "system", "content": session['system']},]
+    return redirect('http://URL/')
+
+@app.route('/changesys', methods=['GET','POST'])
+def changesys():
+    session.pop('data', None)
+    if request.method == 'POST':  
+        # get the description submitted on the web page
+        prompt = request.form.get('description')
+        if len(prompt)>0:
+            session['system'] = prompt
+            session['data'] = [{"role": "system", "content": session['system'] },]
+            return redirect('http://URL/') 
+    return render_template('changesys.html')
 
 @app.route('/', methods=['GET','POST'])
 def chat():
@@ -41,7 +60,8 @@ def chat():
                 session['data'] = messages
         
     else:
-        session['data'] = [{"role": "system", "content": "You are a helpful assistant."},]
+        session['system'] = "You are a helpful assistant."
+        session['data'] = [{"role": "system", "content": session['system']},]
     
     return render_template('app_frontend.html', data = session['data'])
 
