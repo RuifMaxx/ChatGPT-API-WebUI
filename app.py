@@ -6,7 +6,11 @@ app.secret_key = 'fkdjsafjdkfdlkjfadskjfadskljdsfklj'
 openai.api_key = "key"
 
 @app.errorhandler(Exception)
-def error_handler(*args):
+def error_handler1(*args):
+    return redirect('http://URL/logout')
+
+@app.errorhandler(502)
+def error_handler2(*args):
     return redirect('http://URL/logout')
 
 def generate_text(messages):
