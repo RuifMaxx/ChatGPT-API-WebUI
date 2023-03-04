@@ -18,7 +18,8 @@ def generate_text(messages):
     response = openai.ChatCompletion.create(
     model="gpt-3.5-turbo",
     messages=messages,
-    temperature = 1.7
+    temperature = 0,
+    max_tokens=1024,
     )
     
     output = response.choices[0].message.content.strip()
