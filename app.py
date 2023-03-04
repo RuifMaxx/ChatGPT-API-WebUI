@@ -4,6 +4,7 @@ from datetime import timedelta
 # create the flask app
 app = Flask(__name__)
 app.secret_key = os.urandom(30)
+app.permanent_session_lifetime = timedelta(hours=2)
 openai.api_key = "your-key"
 
 @app.errorhandler(Exception)
