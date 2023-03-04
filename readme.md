@@ -12,11 +12,9 @@ the minimum webpage implement of to Call ChatGPT API
 
 ```python
 openai.api_key = "your_key"
-
-return redirect('http://url/')
 ```
 
-* edit app_frontend.html
+* edit app_frontend.html,changesys.html
 
 ```html
 <form action="http://your-url/" method="POST">
