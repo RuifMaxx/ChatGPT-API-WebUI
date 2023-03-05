@@ -4,9 +4,7 @@ WORKDIR /docker_demo
  
 ADD . .
 
-RUN pip install -i https://pypi.tuna.tsinghua.edu.cn/simple openai==0.27.0
-
-RUN pip install -i https://pypi.tuna.tsinghua.edu.cn/simple flask==2.0.3
+RUN pip install -i https://pypi.tuna.tsinghua.edu.cn/simple -r requirements.txt
 
 CMD ["python", "app.py"]
 
