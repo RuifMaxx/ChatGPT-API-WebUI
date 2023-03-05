@@ -14,8 +14,10 @@ the minimum webpage implement of to Call ChatGPT API
 openai.api_key = "your_key"
 ```
 
+* lanuch 
 ```bash
-docker build --network=host -t app:v0 .
-docker run --name app -p 80:80 -d app:v0
+./run.sh
 
+# or
+python3 app.py
 ```
