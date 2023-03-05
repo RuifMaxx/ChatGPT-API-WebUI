@@ -1,10 +1,11 @@
 from flask import Flask, request, session, redirect, url_for, render_template
 import os,openai
 from datetime import timedelta
+import sys
 # create the flask app
 app = Flask(__name__)
 app.secret_key = os.urandom(30)
-openai.api_key = "your-key"
+openai.api_key = sys.argv[1]
 app.permanent_session_lifetime = timedelta(minutes=50)
 
 def generate_text(messages):

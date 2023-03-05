@@ -6,18 +6,15 @@ the minimum webpage implement of to Call ChatGPT API
 
 ![](./chatgpt.gif)
 
-## Quick Start
+## Docker
 
-* edit app.py
-
-```python
-openai.api_key = "your_key"
-```
-
-* lanuch 
 ```bash
 ./run.sh
+docker run --name app -p 80:80 -d python app.py your-api-key
+```
 
-# or
-python3 app.py
+## pip
+```bash
+pip install -r requirements.txt
+ython app.py your-api-key
 ```
