@@ -6,5 +6,5 @@ ADD . .
 
 RUN pip install -i https://pypi.tuna.tsinghua.edu.cn/simple -r requirements.txt
 
-CMD ["python", "app.py"]
+CMD ["python","app.py","api-key"]
 
