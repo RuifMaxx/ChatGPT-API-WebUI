@@ -49,6 +49,7 @@ def chat():
     if 'data' in session.keys():
         messages = session['data']
         if request.method == 'POST':  
+            # TODO if len(prompt)>0:
             # get the description submitted on the web page
             prompt = request.form.get('description')
             session['data'].append({"role": "user", "content": prompt},)
