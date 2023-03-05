@@ -16,5 +16,5 @@ docker run --name app -p 80:80 -d python app.py your-api-key
 ## pip
 ```bash
 pip install -r requirements.txt
-ython app.py your-api-key
+python app.py your-api-key
 ```
