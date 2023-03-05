@@ -5,9 +5,12 @@ import sys
 # create the flask app
 app = Flask(__name__)
 app.secret_key = os.urandom(30)
-openai.api_key = sys.argv[1]
+try:
+    openai_api = sys.argv[1]
+except:
+    openai_api = os.getenv('apiKey')
+openai.api_key = openai_api
 app.permanent_session_lifetime = timedelta(minutes=50)
-
 def generate_text(messages):
     
     response = openai.ChatCompletion.create(
