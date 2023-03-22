@@ -9,7 +9,7 @@ the minimum webpage implement of to Call ChatGPT API
 ## Docker Hub 
 
 ```bash
-docker run --name app -p 80:80 -d ruifma/chatgptwebui:0.12 python app.py your-api-key
+docker run --name app -p 80:80 -d ruifma/chatgptwebui:0.13 python app.py your-api-key
 ```
 
 ## Docker
