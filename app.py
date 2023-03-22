@@ -49,16 +49,16 @@ def chat():
     if 'data' in session.keys():
         messages = session['data']
         if request.method == 'POST':  
-            # TODO if len(prompt)>0:
             # get the description submitted on the web page
             prompt = request.form.get('description')
-            session['data'].append({"role": "user", "content": prompt},)
-            
-            messages = session['data']
-            a_description = generate_text(messages)
-            
-            messages.append({"role": "assistant", "content": a_description},)
-            session['data'] = messages
+            if len(prompt)>0:
+                session['data'].append({"role": "user", "content": prompt},)
+                
+                messages = session['data']
+                a_description = generate_text(messages)
+                
+                messages.append({"role": "assistant", "content": a_description},)
+                session['data'] = messages
                     
     else:
         session['system'] = "You are a helpful assistant."

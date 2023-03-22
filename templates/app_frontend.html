@@ -9,13 +9,15 @@
 			<a href = '/changesys'></b>设置机器人角色(Set up the robot role)</b></a>
 			<br>
 			<a href = '/logout'></b>清空对话内容 (clear conversation)</b></a>
+			<script src="https://cdn.jsdelivr.net/npm/marked@3/marked.min.js"></script>
 			<script>
 				var sec = {{ data | tojson }};
 
 				for (var i=0;i<sec.length;i++)
 				{ 
+					const html = marked(sec[i]["content"]);
 
-					document.write("<p>"+sec[i]["role"] +": "+sec[i]["content"]+ "<p>");
+					document.write("<p>"+sec[i]["role"] +": "+html+ "<p>");
 				}
 
 			</script>
