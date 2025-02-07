@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+</head>
+<body>
+    {% if error %}
+        <p style="color: red;">{{ error }}</p>
+    {% endif %}
+    <form method="post">
+        <label for="username">用户名:</label>
+        <input type="text" id="username" name="username" required><br>
+        <label for="password">密码:</label>
+        <input type="password" id="password" name="password" required><br>
+        <input type="submit" value="登陆">
+    </form>
+</body>
+</html>
