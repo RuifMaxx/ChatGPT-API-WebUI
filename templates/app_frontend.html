@@ -1,38 +1,69 @@
 <!DOCTYPE html>
 <html>
-	<head>
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	  	<link rel="stylesheet" href="{{ url_for('static', filename='asset_code.css') }}">
-	</head>
-	<body>
-		<h1>DeepSeek R1聊天机器人</h1>
-			<p>作者：马瑞峰</p>
-		    <!-- 登出按钮 -->
-			<form action="{{ url_for('logout') }}" method="post">
-				<input type="submit" value="退出登陆">
-			</form>
-			<a href = '/changesys'></b>设置DeepSeek角色(Set up the DeepSeek role)</b></a>
-			<br>
-			<a href = '/logout'></b>清空对话内容 (clear conversation)</b></a>
-			<script src="https://cdn.jsdelivr.net/npm/marked@3/marked.min.js"></script>
-			<script>
-				var sec = {{ data | tojson }};
 
-				for (var i=0;i<sec.length;i++)
-				{ 
-					const html = marked(sec[i]["content"]);
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='asset_code.css') }}">
+</head>
 
-					document.write("<p>"+sec[i]["role"] +": "+html+ "<p>");
-				}
+<body>
+    <h1>DeepSeek R1聊天机器人</h1>
+    <p>作者：马瑞峰</p>
+    <!-- 登出按钮 -->
+    <form action="{{ url_for('logout') }}" method="post">
+        <input type="submit" value="退出登陆">
+    </form>
+    <a href='/changesys'>设置DeepSeek角色(Set up the DeepSeek role)</a>
+    <br>
+    <a href='/logout'>清空对话内容 (clear conversation)</a>
+    <script src="https://cdn.jsdelivr.net/npm/marked@3/marked.min.js"></script>
+    <div id="conversation">
+        {% for message in data %}
+            <p>{{ message.role }}: {{ message.content | safe }}</p>
+        {% endfor %}
+    </div>
+    <form id="chat-form">
+        <label for="description">You:</label>
+        <input type="text" id="description" name="description">
+        <button type="submit" class="cv_btn">提交(submit)</button>
+    </form>
+    <script>
+        const conversation = document.getElementById('conversation');
+        document.getElementById('chat-form').addEventListener('submit', async function (event) {
+            event.preventDefault();
+            const input = document.getElementById('description');
+            const prompt = input.value;
+            if (prompt.length > 0) {
+                const userMessage = document.createElement('p');
+                userMessage.innerHTML = `user: ${marked(prompt)}`;
+                conversation.appendChild(userMessage);
+                input.value = '';
 
-			</script>
-			
+                const response = await fetch('/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded'
+                    },
+                    body: `description=${encodeURIComponent(prompt)}`
+                });
 
-			<form action="/" method="POST">
-				<label form="description">You:</label>
-				<input type="text" id="description" name="description">
-				<button type="submit" class=cv_btn>提交(submit)</button>
+                const reader = response.body.getReader();
+                const decoder = new TextDecoder();
+                let fullResponse = '';
+                const assistantMessage = document.createElement('p');
+                assistantMessage.innerHTML = 'assistant: ';
+                conversation.appendChild(assistantMessage);
 
-			</form>
-	</body>
+                while (true) {
+                    const { done, value } = await reader.read();
+                    if (done) break;
+                    const chunk = decoder.decode(value);
+                    fullResponse += chunk;
+                    assistantMessage.innerHTML = `assistant: ${marked(fullResponse)}`;
+                }
+            }
+        });
+    </script>
+</body>
+
 </html>

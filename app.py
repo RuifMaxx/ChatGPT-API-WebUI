@@ -1,4 +1,4 @@
-from flask import Flask, request, session, redirect, url_for, render_template
+from flask import Flask, request, session, redirect, url_for, render_template, Response
 import os, openai
 from datetime import timedelta
 import sys
@@ -22,15 +22,17 @@ users = {
     "DeepSeek": os.getenv('chatbot')
 }
 
-def generate_text(messages):
+def generate_text_stream(messages):
     response = openai.ChatCompletion.create(
         model="deepseek-r1",
         messages=messages,
         temperature=0,
         max_tokens=1024,
+        stream=True  # 开启流式输出
     )
-    output = response.choices[0].message.content.strip()
-    return output
+    for chunk in response:
+        if 'choices' in chunk and len(chunk.choices) > 0 and 'delta' in chunk.choices[0] and 'content' in chunk.choices[0].delta:
+            yield chunk.choices[0].delta.content
 
 # 登录路由
 @app.route('/login', methods=['GET', 'POST'])
@@ -82,9 +84,18 @@ def chat():
             if len(prompt) > 0:
                 session['data'].append({"role": "user", "content": prompt})
                 messages = session['data']
-                a_description = generate_text(messages)
-                messages.append({"role": "assistant", "content": a_description})
+
+                full_response = ""
+                def stream():
+                    nonlocal full_response
+                    for chunk in generate_text_stream(messages):
+                        full_response += chunk
+                        yield chunk
+
+                response = Response(stream(), mimetype='text/plain')
+                messages.append({"role": "assistant", "content": full_response})
                 session['data'] = messages
+                return response
     else:
         session['system'] = "You are a helpful assistant."
         session['data'] = [{"role": "system", "content": session['system']},]
