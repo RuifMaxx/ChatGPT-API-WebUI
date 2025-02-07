@@ -13,7 +13,7 @@ except:
     openai_api = os.getenv('apiKey')
 
 openai.api_key = openai_api
-openai.api_base = "https://dashscope.aliyuncs.com/compatible-mode/v1"
+openai.api_base = "https://api.deepseek.com/v1"
 
 app.permanent_session_lifetime = timedelta(minutes=180)
 
@@ -24,7 +24,7 @@ users = {
 
 def generate_text_stream(messages):
     response = openai.ChatCompletion.create(
-        model="qwen-max-0125",
+        model="deepseek-chat",
         messages=messages,
         temperature=0,
         max_tokens=1024,
