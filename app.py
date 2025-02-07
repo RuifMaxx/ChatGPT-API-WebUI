@@ -24,7 +24,7 @@ users = {
 
 def generate_text_stream(messages):
     response = openai.ChatCompletion.create(
-        model="deepseek-r1",
+        model="qwen-max-0125",
         messages=messages,
         temperature=0,
         max_tokens=1024,
